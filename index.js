@@ -13,10 +13,9 @@ app.use((req, res, next) => {
 });
 
 // Add middleware to process JSON request body
-app.use(express.json());
-
+app.use(express.json())
 // Set the view engine
-
+app.set("view engine")
 
 // Define the schema for a planet called planetSchema
 // Add the following attributes
@@ -26,12 +25,23 @@ app.use(express.json());
 // imagePath (string)
 // description (string)
 // orbital (number)
+const planetSchema = new mongoose.Schema({
+  name:{type:string},
+  distance:{type:number},
+  imagePatch:{type:string},
+  description:{type:string},
+  orbital:{type:number}
+})
+
 
 // Define the model called Planet using planetSchema 
-
+const Planet = mongoose.model("planet", planetSchema, "planets")
 // Create a get route to / that renders home.ejs which renders all the planets into cards
 // e.g. /info/Mercury sends back Mercury's info page
-
+app.get("/", async (req,res)=>{
+  const planets = await planetSchema.find({})
+  res.render('home.ejs',{planets})
+}
 
 // Go into home.ejs and plug in the attributes
 
